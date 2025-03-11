@@ -4,11 +4,11 @@ from torchvision import transforms
 import torchvision.models as models
 from PIL import Image
 from torchvision import datasets
-from llm import talk_to_llm
 from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
 import matplotlib.pyplot as plt
+import certifi
 
 
 
@@ -22,7 +22,7 @@ load_dotenv()
 # MongoDB connection
 @st.cache_resource
 def get_mongo_connection():
-    client = MongoClient(os.getenv("MONGO_URI"))
+    client = MongoClient(os.getenv("MONGO_URI") , tlsCAFile=certifi.where())
     return client
 
 def get_nutrition_data(food_name):
