@@ -1,6 +1,6 @@
 import streamlit as st
 from PIL import Image
-from motor.motor_asyncio import AsyncIOMotorClient
+import pymongo
 import os
 from dotenv import load_dotenv
 import matplotlib.pyplot as plt
@@ -15,11 +15,11 @@ load_dotenv(override=True)
 # MongoDB connection
 @st.cache_resource
 def get_mongo_connection():
-    client = AsyncIOMotorClient(os.getenv("MONGO_URI") , tlsCAFile=certifi.where())
+    client = pymongo.MongoClient(os.getenv("MONGO_URI") , tlsCAFile=certifi.where())
     return client
 
-async def get_nutrition_data(food_name):
-    client = await get_mongo_connection()
+def get_nutrition_data(food_name):
+    client = get_mongo_connection()
     db = client[os.getenv("DB_NAME")]
     collection = db[os.getenv("COLLECTION_NAME")]
 
