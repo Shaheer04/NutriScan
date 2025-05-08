@@ -12,6 +12,8 @@ import base64
 # Load environment variables
 load_dotenv(override=True)
 
+MIN_CONFIDENCE_THRESHOLD = 0.6
+
 # MongoDB connection
 @st.cache_resource
 def get_mongo_connection():
@@ -105,7 +107,15 @@ def predict_with_endpoint(image):
             try:
                 result = response.json()
                 if "predicted_class" in result and "confidence" in result:
-                    return result["predicted_class"], result["confidence"]
+                    predicted_class = result["predicted_class"]
+                    confidence = result["confidence"]
+                    
+                    # Check if confidence is above the threshold
+                    if confidence >= MIN_CONFIDENCE_THRESHOLD:
+                        return predicted_class, confidence
+                    else:
+                        return None, 0
+
                 else:
                     st.error(f"Unexpected response format: {result}")
                     return None, 0
