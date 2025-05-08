@@ -9,6 +9,7 @@ dependencies:
   - torchvision=0.20.1
   - pymongo=4.6.2
   - pillow=11.1.0
+  - matplotlib=3.7.2
   - numpy=2.2.2
   - pip=23.0
   - pip:
